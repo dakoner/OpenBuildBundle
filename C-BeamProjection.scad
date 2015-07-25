@@ -1,0 +1,1 @@
+projection(cut=true) rotate([90,0,0]) import("c:/Users/dek/Downloads/cbeam.stl");
