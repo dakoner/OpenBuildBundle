@@ -1,0 +1,8 @@
+# -*- coding: utf-8 -*-
+
+# Macro Begin: /home/dek/OpenBuildBundle/test.FCMacro +++++++++++++++++++++++++++++++++++++++++++++++++
+import FreeCAD
+
+App.getDocument("openbuild_linear_motor").Part__Feature.Placement=App.Placement(App.Vector(0,0,0), App.Rotation(App.Vector(1,0,0),90), App.Vector(0,0,0)).multiply(App.getDocument("openbuild_linear_motor").Part__Feature.Placement)
+App.getDocument("openbuild_linear_motor").Part__Feature001.Placement=App.Placement(App.Vector(0,0,0), App.Rotation(App.Vector(1,0,0),90), App.Vector(0,0,0)).multiply(App.getDocument("openbuild_linear_motor").Part__Feature001.Placement)
+# Macro End: /home/dek/OpenBuildBundle/test.FCMacro +++++++++++++++++++++++++++++++++++++++++++++++++

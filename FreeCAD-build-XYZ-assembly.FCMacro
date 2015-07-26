@@ -1,0 +1,65 @@
+import sys
+sys.path.insert(0, "/usr/lib/freecad/lib")
+import FreeCAD
+
+def visit(node, location, rotation, angle, level=0):
+  print "\t" * level, node.Name, " ", node.Label
+  if hasattr(node, "Group"):
+    print "\t" * level, "is a group"
+    for item in node.Group:
+      print "\t" * level, "visit: ", item.Name, " ", item.Label
+      if type(item) == type(node):
+        print "\t" * level, "visit group item"
+        visit(item, location, rotation, angle, level + 1)
+      else:
+        print "\t" * level, "group item:", item.Name, " ", item.Label, item.Placement
+        item.Placement = App.Placement(App.Vector(*location),App.Rotation(App.Vector(*rotation),angle)).multiply(item.Placement)
+  else:
+    node.Placement = App.Placement(App.Vector(*location),App.Rotation(App.Vector(*rotation),angle)).multiply(node.Placement)
+      
+      
+  
+for d in App.listDocuments().keys():
+  try:
+    App.closeDocument(d)
+  except:
+    pass
+App.setActiveDocument("")
+
+filename = "/home/dek/OpenBuildBundle/openbuild linear motor.FCStd"
+newdoc = FreeCAD.open(filename)
+
+App.ActiveDocument=newdoc
+Gui.ActiveDocument=newdoc
+
+newdoc.mergeProject(filename)
+newdoc.recompute()
+
+x = App.getDocument("openbuild_linear_motor").getObjectsByLabel("openbuild linear motor")[0]
+x.Label = "X axis linear motor"
+
+y = App.getDocument("openbuild_linear_motor").getObjectsByLabel("openbuild linear motor001")[0]
+y.Label = "Y axis linear motor"
+
+newdoc.recompute()
+
+docs = App.listDocuments()
+location = (0, 0, 0)
+rotation = (1, 0, 0)
+angle = 90
+for name, doc in docs.iteritems():
+  print "Visit doc:", name
+  print dir(doc)
+  for o in doc.Objects:
+    print "Visit object:", o
+    visit(o, location, rotation, angle)
+
+
+
+
+
+# Gui.SendMsgToActiveView("ViewFit")
+
+
+
+# import pdb; pdb.set_trace()
